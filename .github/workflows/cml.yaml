@@ -28,10 +28,6 @@ jobs:
         restore-keys: |
           dvc-cache-
 
-    - name: Pull data with DVC
-      run: |
-        dvc pull --allow-missing
-
     - name: Reproduce model
       run: |
         python src/train.py
