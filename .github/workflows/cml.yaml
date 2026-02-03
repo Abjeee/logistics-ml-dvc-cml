@@ -1,0 +1,35 @@
+name : ML Pipeline with DVC & CML
+
+on:[push]
+
+jobs:
+   train:
+      runs-on: ubuntu-latest
+   
+      steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with: 
+          python-version: '3.10'
+     
+      - name: Install dependencies
+        run: |
+         pip install dvc cml scikit-learn pandas matplotlib
+     
+      - name: Reproduce model
+        run: python src/train.py
+      - name: CML reports
+        env:
+           REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          echo "##Logistics Demand Forecasting Report" >> report.md
+          cat metrics/metrics.json >> report.md
+          cml-publish plots/demand.png --md >> report.md
+          cml-send-command report.md
+ 
+
+
+
+
