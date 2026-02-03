@@ -3,48 +3,44 @@ name: ML Pipeline with DVC & CML
 on: [push]
 
 jobs:
-   train:
-      runs-on: ubuntu-latest
-   
-      steps:
-      - uses: actions/checkout@v3
+  train:
+    runs-on: ubuntu-latest
 
-      - name: Setup Python
-        uses: actions/setup-python@v4
-        with: 
-          python-version: '3.10'
+    steps:
+    - uses: actions/checkout@v3
 
-      - name: Install dependencies
-        run: |
-         pip install --upgrade pip
-         pip install dvc sciearn pandas matplotlib
-         npm install -g @dvcorg/cml
+    - name: Setup Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
 
-      - name: Cache DVC files
-        uses: actions/cache@v3
-        with:
-         path: .dvc/cache
-         key: dvc-cache-${{ hashFiles('**/*.dvc') }}
-         restore-keys: |
+    - name: Install dependencies
+      run: |
+        pip install --upgrade pip
+        pip install dvc scikit-learn pandas matplotlib
+        npm install -g @dvcorg/cml
+
+    - name: Cache DVC files
+      uses: actions/cache@v3
+      with:
+        path: .dvc/cache
+        key: dvc-cache-${{ hashFiles('**/*.dvc') }}
+        restore-keys: |
           dvc-cache-
 
-      - name: Pull data with DVC
-        run: |
-         dvc pull --allow-missing
+    - name: Pull data with DVC
+      run: |
+        dvc pull --allow-missing
 
-      - name: Reproduce model
-        run: python src/train.py
+    - name: Reproduce model
+      run: |
+        python src/train.py
 
-      - name: CML reports
-        env:
-           REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          echo "##Logistics Demand Forecasting Report" >> report.md
-          cat metrics/metrics.json >> report.md
-          cml-publish plots/demand.png --md >> report.md
-          cml-send-command report.md
- 
-
-
-
-
+    - name: CML reports
+      env:
+        REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        echo "## Logistics Demand Forecasting Report" >> report.md
+        cat metrics/metrics.json >> report.md
+        cml-publish plots/demand.png --md >> report.md
+        cml-send-comment report.md
