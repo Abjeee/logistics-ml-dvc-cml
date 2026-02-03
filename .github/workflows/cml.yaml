@@ -1,6 +1,6 @@
-name : ML Pipeline with DVC & CML
+name: ML Pipeline with DVC & CML
 
-on:[push]
+on: [push]
 
 jobs:
    train:
