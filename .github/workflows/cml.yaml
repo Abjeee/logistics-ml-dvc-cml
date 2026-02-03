@@ -23,9 +23,9 @@ jobs:
       - name: Cache DVC files
         uses: actions/cache@v3
         with:
-        path: .dvc/cache
-        key: dvc-cache-${{ hashFiles('**/*.dvc') }}
-        restore-keys: |
+         path: .dvc/cache
+         key: dvc-cache-${{ hashFiles('**/*.dvc') }}
+         restore-keys: |
           dvc-cache-
 
       - name: Pull data with DVC
