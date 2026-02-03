@@ -38,7 +38,7 @@ jobs:
 
     - name: CML reports
       env:
-        REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        REPO_TOKEN: ${{ secrets.CML_TOKEN }}
       run: |
         echo "## Logistics Demand Forecasting Report" >> report.md
         cat metrics/metrics.json >> report.md
