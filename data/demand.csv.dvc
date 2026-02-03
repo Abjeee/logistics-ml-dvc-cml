@@ -1,0 +1,5 @@
+outs:
+- md5: 308ec028a64f261ef93e142200025fdb
+  size: 89
+  hash: md5
+  path: demand.csv
