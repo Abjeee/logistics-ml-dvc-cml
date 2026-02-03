@@ -44,3 +44,4 @@ jobs:
         cat metrics/metrics.json >> report.md
         cml-publish plots/demand.png --md >> report.md
         cml-send-comment report.md
+
